@@ -7,7 +7,7 @@
 A mobile-first static page for **Trailside Tales, Tour 1: Where the Trail Meets the Lake** — Harrison trailhead (mile 15.3) south ~7–7.5 miles to Chatcolet Bridge / Heyburn State Park.
 
 - Written by Dave (Harrison, Idaho)
-- Narrated by a computer voice (Chatterbox) — disclosed on the page
+- Narrated by Robert Plank
 - Tap-to-play HTML5 audio (no auto GPS in this draft)
 - Approximate OpenStreetMap map with two pins (trailhead + bridge only)
 
