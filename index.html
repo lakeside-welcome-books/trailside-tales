@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>DRAFT – Trailside Tales, Tour 1: Where the Trail Meets the Lake</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+  :root{
+    --lake:#1f3a4d; --lake2:#2f5d74; --pine:#2e5e4e; --sand:#f6f1e7; --card:#ffffff;
+    --ink:#1d2328; --muted:#5b6670; --line:#e3ddd0; --accent:#c8752b; --warn:#8a4b0f; --warnbg:#fff4e5;
+    --review:#6b3a6e; --reviewbg:#f8eef8;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--sand);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .draft-bar{position:sticky;top:0;z-index:20;background:#a11d1d;color:#fff;text-align:center;font-weight:700;font-size:13px;letter-spacing:.04em;padding:8px 12px}
+  header{background:linear-gradient(160deg,var(--lake) 0%,var(--lake2) 55%,var(--pine) 100%);color:#fff;padding:34px 20px 54px;position:relative;overflow:hidden}
+  header svg.hills{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:60px}
+  .wrap{max-width:680px;margin:0 auto}
+  .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:12px;opacity:.85;margin:0 0 6px}
+  h1{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:28px;line-height:1.15;margin:0 0 10px}
+  header p.lead{margin:0 0 10px;opacity:.95;font-size:16px}
+  header .honest{margin:0;opacity:.9;font-size:14px;background:rgba(0,0,0,.18);border-radius:10px;padding:10px 12px}
+  nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:-28px auto 0;padding:0 16px;max-width:680px;position:relative;z-index:2}
+  nav.toc a{background:#fff;color:var(--lake);text-decoration:none;font-weight:600;font-size:13px;padding:7px 11px;border-radius:999px;border:1px solid var(--line);box-shadow:0 1px 2px rgba(0,0,0,.05)}
+  main{max-width:680px;margin:0 auto;padding:18px 16px 40px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin:16px 0}
+  h2{font-family:Georgia,"Times New Roman",serif;color:var(--lake);font-size:21px;margin:0 0 6px;display:flex;align-items:flex-start;gap:10px;line-height:1.25}
+  h2 .num{width:30px;height:30px;border-radius:50%;background:var(--sand);color:var(--lake);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;flex:0 0 auto;margin-top:2px}
+  .landmark{color:var(--muted);font-size:14px;margin:0 0 12px}
+  .callout{background:var(--warnbg);border-left:4px solid var(--accent);border-radius:10px;padding:12px 14px;margin:12px 0;color:#4a2c0a}
+  .callout strong{color:var(--warn)}
+  .review{background:var(--reviewbg);border-left:4px solid var(--review);border-radius:10px;padding:10px 12px;margin:0 0 12px;color:#3d2040;font-size:14px}
+  .review strong{color:var(--review)}
+  audio{width:100%;margin:4px 0 12px;display:block}
+  .nav-stops{display:flex;justify-content:space-between;gap:10px;margin-top:4px}
+  .nav-stops a{flex:1;text-align:center;text-decoration:none;font-weight:600;font-size:14px;color:var(--lake2);background:var(--sand);border:1px solid var(--line);border-radius:10px;padding:10px 8px}
+  .nav-stops a.disabled{opacity:.35;pointer-events:none}
+  .muted{color:var(--muted);font-size:14px}
+  #map{height:280px;border-radius:12px;border:1px solid var(--line);margin-top:10px;z-index:1}
+  .how ol{margin:8px 0 0;padding-left:20px}
+  .how li{margin:6px 0}
+  footer{max-width:680px;margin:0 auto;padding:0 16px 48px;color:var(--muted);font-size:13px}
+  @media (max-width:420px){ h1{font-size:24px} }
+</style>
+</head>
+<body>
+<div class="draft-bar">DRAFT · NOT PUBLISHED · Reviews still pending · Tap to play (no auto-GPS yet)</div>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">Trailside Tales · Tour 1</p>
+    <h1>Where the Trail Meets the Lake</h1>
+    <p class="lead">Harrison trailhead (mile 15.3) south about 7 to 7.5 miles to the Chatcolet Bridge and Heyburn State Park. Cycling, one way.</p>
+    <p class="honest">Written by Dave, a Harrison local. Narrated by a computer voice (Chatterbox).</p>
+  </div>
+  <svg class="hills" viewBox="0 0 680 60" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 40 C 90 10, 170 10, 250 34 S 420 58, 520 26 S 640 18, 680 30 L680 60 L0 60 Z" fill="#f6f1e7"/>
+  </svg>
+</header>
+
+<nav class="toc" aria-label="Stops">
+  <a href="#how">How it works</a>
+  <a href="#map-section">Map</a>
+  <a href="#stop-0">Intro</a>
+  <a href="#stop-1">1</a>
+  <a href="#stop-2">2</a>
+  <a href="#stop-3">3</a>
+  <a href="#stop-4">4</a>
+  <a href="#stop-5">5</a>
+  <a href="#stop-6">6</a>
+  <a href="#stop-7">7</a>
+  <a href="#stop-8">8</a>
+  <a href="#stop-9">9</a>
+  <a href="#stop-10">10</a>
+  <a href="#stop-11">Outro</a>
+</nav>
+
+<main>
+
+<section id="how" class="how">
+  <h2><span class="num">?</span>How this draft works</h2>
+  <p>This is a simple web tour. On each stop, <strong>tap Play</strong> when you reach that landmark. Your phone will not start the stories by itself (GPS auto-play may come later).</p>
+  <ol>
+    <li>Start at the Harrison trailhead by the public beach. Play the Intro before you roll out.</li>
+    <li>Ride south along the lake. At each landmark below, open that stop and tap Play.</li>
+    <li>Keep volume low (or one earbud) so you can hear bells and voices around you.</li>
+    <li>Stay on the pavement and at rest stops. Carry your own drinking water.</li>
+  </ol>
+  <div class="callout"><strong>Play clean.</strong> The old rail bed was built with mine waste. The trail’s asphalt is a clean cap. Stay on the trail, wash hands before eating, and brush dirt off shoes, gear, and pets. Advice from Idaho Parks &amp; Recreation and the Coeur d’Alene Basin cleanup program.</div>
+  <div class="review"><strong>Still a draft.</strong> Some stops are waiting on review from the Crane Historical Society and the Coeur d’Alene Tribe’s cultural staff. Those stops are marked below. Do not treat this page as a final published tour.</div>
+</section>
+
+<section id="map-section">
+  <h2><span class="num">🗺</span>Route map (approximate)</h2>
+  <p class="muted">Two pins only: Harrison trailhead and Chatcolet Bridge. Mid-route stop locations are listed as text landmarks below — not GPS pins — until a test ride sets them. Pins are approximate from public sources.</p>
+  <div id="map" role="img" aria-label="Approximate map of Harrison trailhead to Chatcolet Bridge"></div>
+</section>
+
+<!-- Stop 0 Intro -->
+<section id="stop-0">
+  <h2><span class="num">0</span>Intro: Welcome, safety and how it works</h2>
+  <p class="landmark">Landmark: Harrison trailhead / public beach — play before riding</p>
+  <p class="muted">Note: The recorded intro still mentions auto-start GPS (from the VoiceMap draft). On this web page, ignore that line and tap Play yourself.</p>
+  <audio controls preload="none" src="audio/00-intro.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a class="disabled" href="#" aria-disabled="true">Previous</a>
+    <a href="#stop-1">Next · Stop 1</a>
+  </div>
+</section>
+
+<!-- Stop 1 -->
+<section id="stop-1">
+  <h2><span class="num">1</span>Where the Trail Meets the Lake</h2>
+  <p class="landmark">Landmark: Harrison trailhead, mile 15.3 — first story as you roll out south</p>
+  <audio controls preload="none" src="audio/01-stop1.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a href="#stop-0">Previous · Intro</a>
+    <a href="#stop-2">Next · Stop 2</a>
+  </div>
+</section>
+
+<!-- Stop 2 -->
+<section id="stop-2">
+  <h2><span class="num">2</span>From Rail Bed to Clean Cap</h2>
+  <p class="landmark">Landmark: about 0.25 mi south of the trailhead, first open lakeside stretch</p>
+  <audio controls preload="none" src="audio/02-stop2.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a href="#stop-1">Previous · Stop 1</a>
+    <a href="#stop-3">Next · Stop 3</a>
+  </div>
+</section>
+
+<!-- Stop 3 -->
+<section id="stop-3">
+  <h2><span class="num">3</span>A Mill Town on the Water</h2>
+  <p class="landmark">Landmark: about 0.5 mi in — look back at the town on the hill</p>
+  <div class="review"><strong>Review pending:</strong> Crane Historical Society (dates and figures).</div>
+  <audio controls preload="none" src="audio/03-stop3.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a href="#stop-2">Previous · Stop 2</a>
+    <a href="#stop-4">Next · Stop 4</a>
+  </div>
+</section>
+
+<!-- Stop 4 -->
+<section id="stop-4">
+  <h2><span class="num">4</span>July 21, 1917</h2>
+  <p class="landmark">Landmark: about 0.75–1 mi — open stretch with a view back toward the old waterfront mill area</p>
+  <div class="review"><strong>Review pending:</strong> Crane Historical Society (fire details and tone).</div>
+  <audio controls preload="none" src="audio/04-stop4.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a href="#stop-3">Previous · Stop 3</a>
+    <a href="#stop-5">Next · Stop 5</a>
+  </div>
+</section>
+
+<!-- Stop 5 -->
+<section id="stop-5">
+  <h2><span class="num">5</span>Brick from the Ashes</h2>
+  <p class="landmark">Landmark: about 1–1.25 mi — within sight of the downtown hillside brick buildings</p>
+  <audio controls preload="none" src="audio/05-stop5.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a href="#stop-4">Previous · Stop 4</a>
+    <a href="#stop-6">Next · Stop 6</a>
+  </div>
+</section>
+
+<!-- Stop 6 -->
+<section id="stop-6">
+  <h2><span class="num">6</span>Steamboat Days</h2>
+  <p class="landmark">Landmark: open water view, about 1.5–2 mi south</p>
+  <div class="review"><strong>Review pending:</strong> Crane Historical Society (steamboat details).</div>
+  <audio controls preload="none" src="audio/06-stop6.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a href="#stop-5">Previous · Stop 5</a>
+    <a href="#stop-7">Next · Stop 7</a>
+  </div>
+</section>
+
+<!-- Stop 7 -->
+<section id="stop-7">
+  <h2><span class="num">7</span>Whose Lake?</h2>
+  <p class="landmark">Landmark: mid-route lakeshore, about 2.5–3 mi south</p>
+  <div class="review"><strong>Review pending:</strong> Coeur d’Alene Tribe cultural staff (reservation, 1894 Harrison cession, 2001 ruling).</div>
+  <audio controls preload="none" src="audio/07-stop7.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a href="#stop-6">Previous · Stop 6</a>
+    <a href="#stop-8">Next · Stop 8</a>
+  </div>
+</section>
+
+<!-- Stop 8 -->
+<section id="stop-8">
+  <h2><span class="num">8</span>The Schitsu'umsh</h2>
+  <p class="landmark">Landmark: mid-route lakeshore, about 4–4.5 mi south</p>
+  <div class="review"><strong>Review pending:</strong> Coeur d’Alene Tribe cultural staff (translation, pronunciation, wording).</div>
+  <audio controls preload="none" src="audio/08-stop8.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a href="#stop-7">Previous · Stop 7</a>
+    <a href="#stop-9">Next · Stop 9</a>
+  </div>
+</section>
+
+<!-- Stop 9 -->
+<section id="stop-9">
+  <h2><span class="num">9</span>The Swing Bridge</h2>
+  <p class="landmark">Landmark: approach to the Chatcolet Bridge ramp, about 6.5 mi — play before the ramp</p>
+  <audio controls preload="none" src="audio/09-stop9.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a href="#stop-8">Previous · Stop 8</a>
+    <a href="#stop-10">Next · Stop 10</a>
+  </div>
+</section>
+
+<!-- Stop 10 -->
+<section id="stop-10">
+  <h2><span class="num">10</span>Heyburn State Park</h2>
+  <p class="landmark">Landmark: south end of the bridge into Heyburn State Park, about 7–7.5 mi</p>
+  <div class="review"><strong>Review pending:</strong> Coeur d’Alene Tribe cultural staff suggested (park created from reservation land, 1908).</div>
+  <audio controls preload="none" src="audio/10-stop10.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a href="#stop-9">Previous · Stop 9</a>
+    <a href="#stop-11">Next · Outro</a>
+  </div>
+</section>
+
+<!-- Outro -->
+<section id="stop-11">
+  <h2><span class="num">★</span>Outro</h2>
+  <p class="landmark">Landmark: after Stop 10, or at the first wayside in the park</p>
+  <audio controls preload="none" src="audio/11-outro.mp3">Your browser does not support audio.</audio>
+  <div class="nav-stops">
+    <a href="#stop-10">Previous · Stop 10</a>
+    <a class="disabled" href="#" aria-disabled="true">Next</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p><strong>Trailside Tales, Tour 1</strong> — written by Dave (Harrison, Idaho). Narrated by a computer voice (Chatterbox). This page is a draft only. Historical Society and Tribe reviews are still pending for some stops.</p>
+  <p>Map pins are approximate. Harrison trailhead ~47.4547, −116.7868 (public trail place listing). Chatcolet Bridge ~47.3782, −116.7536 (HistoricBridges.org). Mid-route stops use text landmarks only.</p>
+  <p>Trail safety: Idaho Parks &amp; Recreation; Coeur d’Alene Basin cleanup program (Play Clean). Free OpenStreetMap tiles via Leaflet. No paid APIs.</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(function () {
+  // Approximate public coordinates — labeled as such on the map.
+  // Harrison trailhead: place listing / Trail of the Coeur d'Alenes near mile 15.3
+  // Chatcolet Bridge: HistoricBridges.org Bridge Locator
+  var start = [47.4547, -116.7868];
+  var end = [47.3782, -116.7536];
+  var map = L.map('map', { scrollWheelZoom: false }).setView([47.416, -116.77], 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+  L.marker(start).addTo(map).bindPopup('<strong>Harrison trailhead</strong><br>Approx. mile 15.3 · start<br><em>Approximate pin</em>');
+  L.marker(end).addTo(map).bindPopup('<strong>Chatcolet Bridge</strong><br>Heyburn State Park end<br><em>Approximate pin</em>');
+  L.polyline([start, end], { color: '#2f5d74', weight: 3, dashArray: '6 6', opacity: 0.7 }).addTo(map);
+  map.fitBounds([start, end], { padding: [28, 28] });
+
+  // Only one audio playing at a time
+  var players = document.querySelectorAll('audio');
+  players.forEach(function (a) {
+    a.addEventListener('play', function () {
+      players.forEach(function (other) {
+        if (other !== a) other.pause();
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
